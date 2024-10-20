@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Milestone 3 assignment from October 2024." />
+	<title>Milestone 3 - Alex Bates</title>
+	<script src="/static/jquery-3.7.1.min.js"></script>
+	<style>
+        /* GLOBAL STYLES */
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #ebebe3;
+            font-family: "Montserrat", sans-serif;
+        }
+        header {
+            background: #ffffff;
+            height: 60px;
+        }
+        .logo {
+            height: 40.5px;
+            width: 45px;
+            padding-left: 10px;
+            padding-top: 9px;
+        }
+        .navlinks {
+            float: right;
+            margin-right: 10px;
+        }
+        .navlinks a {
+            text-decoration: none;
+            color: #000000;
+            font-size: 18px;
+        }
+        .navlinks a:hover {
+            color: #1a1a1a;
+        }
+        .navlinks ul {
+            list-style-type: none;
+            display: flex;
+            margin: 0;
+        }
+        .navlinks ul li {
+            line-height: 60px;
+            padding-left: 26px;
+            font-weight: 600;
+        }
+        @media screen and (max-width: 740px) {
+            body {
+                width: 740px;
+            }
+        }
+        /* MILESTONE 2 SPECIFIC STYLES */
+        .m3linksnav {
+            background: #ffffff;
+            border-top: 1px solid #b8b8b8;
+            padding: 6px 10px;
+        }
+        .m3links {
+	        list-style-type: none;
+	        display: flex;
+	        margin-top: 0px;
+            margin-bottom: 0px;
+            padding-left: 0px;
+        }
+        .m3links li {
+	        line-height: 36px;
+	        padding-left: 12px;
+            padding-right: 12px;
+	        font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .m3links li a {
+            text-decoration: none;
+        }
+        .m3active {
+            border: 1px solid #b8b8b8;
+        }
+        .m3active a {
+            color: #000000;
+        }
+        .m3inactive a {
+            color: #000000;
+        }
+        /* PAGE SPECIFIC STYLES */
+		main {
+			padding-left: 10px;
+			padding-right: 10px;
+			padding-top: 0px;
+		}
+		.pageinfo {
+            color: #acac98;
+            font-weight: 600;;
+        }
+        .pageinfo a {
+            color: #8b8aa1;
+        }
+        #pagination {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .pagebtn {
+            background: #ffffff;
+            border: none;
+            cursor: pointer;
+            font-family: "Montserrat", sans-serif;
+            font-size: 18px;
+            height: 40px;
+            margin-right: 5px;
+            width: 40px;
+        }
+        .active {
+            border: 1px solid #868686;
+        }
+        #bookcontainer {
+            display: flex;
+            flex-wrap: wrap;
+        }
+		.book {
+            background-color: #ffffff;
+            padding: 0px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            width: calc(25% - 7.5px);
+            border-radius: 10px;
+        }
+        .book:nth-of-type(4n) {
+            margin-right: 0px;
+        }
+        .bookimg {
+            border-radius: 10px 0px 0px 10px;
+            float: left;
+            height: 200px;
+            width: 140px;
+        }
+        .bookright {
+            overflow: hidden;
+            padding-left: 6px;
+            padding-right: 6px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            float: right;
+            width: calc(100% - 152px);
+        }
+        .bookright a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        .searchform {
+            margin-top: 10px; 
+            margin-bottom: 10px; 
+        }
+        #search-input {
+            background: #ffffff;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            font-size: 18px;
+            height: 40px;
+            margin-right: 5px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            padding-left: 10px;
+            padding-right: 10px;
+            width: calc(100% - 122px);
+            -webkit-box-shadow: none;
+        }
+        #search-input:focus {box-shadow: none; outline: 0; -webkit-box-shadow: none;}
+        #search-input::placeholder {color: #bababa;}
+        .search-btn {
+            border: none;
+            background: #2980b9;
+            cursor: pointer;
+            float: right;
+            height: 40px;
+            padding: 0;
+            width: 90px;
+        }
+        .search-btn:active, .search-btn.active, .search-btn:hover, .search-btn:focus {outline: none;}
+        .searchbtn-icon {display: block; height: 20px; padding-left: 34px; width: 20px;}
+        .searchbtn-icon img {height: 100%; width: 100%;}
+        @media screen and (max-width: 1020px) {
+            .book {
+                width: calc(33.33% - 6.67px);
+            }
+            .book:nth-of-type(4n) {
+                margin-right: 10px;
+            }
+            .book:nth-of-type(3n) {
+                margin-right: 0px;
+            }
+        }
+        /* Book Details Section (below book container) */
+        #bookdetail {
+            background-color: #ffffff;
+            display: none;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+		#bookdetail h2 {
+			font-family: "Libre Baskerville", serif;
+			font-weight: 800;
+            margin-top: 0px;
+            margin-bottom: 14px;
+        }
+		/* Align child img and div elements side by side */
+        .bookdata {
+            display: flex;
+            align-items: flex-start;
+        }
+        .booktext a {
+            display: block;
+            padding-top: 10px;
+        }
+        .authors {
+            font-weight: bold;
+            margin-top: 0px;
+        }
+        .metadata {
+            color: #696969;
+			margin-bottom: 0px;
+        }
+        .subtitle {
+			font-size: 22px;
+			font-weight: normal;
+		}
+		.isbn {
+            color: #696969;
+            margin-bottom: 0px;
+        }
+        .cover-photo {
+            width: 140px;
+            height: 200px;
+            margin-right: 10px;
+        }
+        .previewlink, .detailurl, .webreaderlink {
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        @media screen and (max-width: 600px) {
+            .bookdata {
+                flex-direction: column;
+            }
+            .cover-photo {
+                margin-right: 0px;
+                margin-bottom: 16px;
+            }
+        }
+	</style>
+    <script>
+        $(function(){
+            // Using array to store books, other variables for pagination
+            var books = [];
+            var currentPage = 1;
+            var booksPerPage = 10;
+    
+            function displayBooks(page) {
+                var startIndex = (page - 1) * booksPerPage;
+                var endIndex = startIndex + booksPerPage;
+                var booksToShow = books.slice(startIndex, endIndex);
+                var resultHTML = "";
+                // Set src for image, or use a default image if not available
+                var cover = "";
+                for (var i in booksToShow) {
+                    var booktitle = booksToShow[i].volumeInfo.title;
+                    var bookid = booksToShow[i].id;
+                    if (booksToShow[i].volumeInfo.imageLinks != null) {
+                        var thumbnail = booksToShow[i].volumeInfo.imageLinks.thumbnail;
+                        if (thumbnail.includes("http")) {
+                            cover = thumbnail;
+                        } else {
+                            cover = "/static/book-not-found.png";
+                        }
+                    } else {
+                        cover = "/static/book-not-found.png";
+                    }
+    
+                    resultHTML += "<div class='book'>";
+                    resultHTML += "<img class='bookimg' src='" + cover + "'>";
+                    // Use javascript:void(0) instead of # to prevent page change
+                    resultHTML += "<div class='bookright'><a href='javascript:void(0);' onclick='displayDetails(\"" + bookid + "\"); return false;'>" + booktitle + "</a></div>";
+                    resultHTML += "</div>";
+                }
+                // Add book divs to the #bookcontainer div
+                $("#bookcontainer").html(resultHTML);
+    
+                // Create page number buttons
+                var totalPages = Math.ceil(books.length / booksPerPage);
+                var buttonHTML = "";
+                for (var i = 1; i <= totalPages; i++) {
+                    // CSS changes to page buttons to clearly indicate which page is selected
+                    if (i === page) {
+                        buttonHTML += "<button type='button' class='pagebtn active' data-page='" + i + "'>" + i + "</button> ";
+                    } else {
+                        buttonHTML += "<button type='button' class='pagebtn' data-page='" + i + "'>" + i + "</button> ";
+                    }
+                }
+                $("#pagination").html(buttonHTML);
+
+                // Handle page button clicks, retrieve the clicked page number
+                $('.pagebtn').on('click', function() {
+                    var selectedPage = $(this).data('page');
+                    currentPage = parseInt(selectedPage);
+                    displayBooks(currentPage);
+                });
+            }
+    
+            function performSearch() {
+                // Prevent the form from submitting normally
+                event.preventDefault();
+                // Get the value of the search input
+                var term = $('#search-input').val().trim();
+                if(term !== "") {
+                    // Google Books returns 400 Bad Request if exceed 40 results
+                    // For this assignment, 50 results are required
+                    // So my workaround is to make two AJAX requests, one for 40 results and one for 10 results
+                    var parameter = "?q=" + term + "&startIndex=0&maxResults=40";
+                    var service_point = "https://www.googleapis.com/books/v1/volumes/" + parameter;
+                    $.getJSON(service_point, function (json) {
+                        // Add first 40 books to the array up top
+                        books = json.items;
+                        var total = json.totalItems;
+                        var parameter2 = "?q=" + term + "&startIndex=40&maxResults=10";
+                        var service_point2 = "https://www.googleapis.com/books/v1/volumes/" + parameter2;
+                        $.getJSON(service_point2, function (json2) {
+                            // Add final 10 books to the array up top
+                            if (json2.items) {
+                                books = books.concat(json2.items);
+                            }
+                            $("#resultcount").text("Showing " + books.length + " of " + total + " results for \"" + term + "\". Click on a book and view details below.");
+                            // Reset to first page and display first page of results
+                            currentPage = 1;
+                            displayBooks(currentPage);
+                        });
+                    });
+                } else {
+                    // Show error message if input is empty
+                    $("#resultcount").text("Please enter a search term."); 
+                }
+            }
+
+            // Handle search button click
+            $('.search-btn').on('click', function(event) {
+                event.preventDefault();
+                performSearch();
+            });
+
+            // Handle Enter key press in the search input
+            $('#search-input').on('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    performSearch();
+                }
+            });
+
+        });
+        function displayDetails(bookid) {
+            var service_point = 'https://www.googleapis.com/books/v1/volumes/' + bookid
+            $.getJSON(service_point, function(detailjson){
+                // bookdetail div is hidden by default. Show it when a book is clicked
+                $("#bookdetail").show();
+
+                // Clear out any previous book details
+                $(".title").empty()
+                $(".subtitle").empty()
+                $(".authors").empty()
+                $(".metadata").empty()
+                $(".description").empty()
+
+                var title = detailjson.volumeInfo.title
+                if(detailjson.volumeInfo.subtitle) {
+                    var subtitle = detailjson.volumeInfo.subtitle
+                } else {
+                    var subtitle = ""
+                }
+                var author = detailjson.volumeInfo.authors.join(', ')
+                var description = detailjson.volumeInfo.description
+                var url = detailjson.volumeInfo.infoLink
+                if(detailjson.volumeInfo.imageLinks && detailjson.volumeInfo.imageLinks.thumbnail) {
+                    var image = detailjson.volumeInfo.imageLinks.thumbnail
+                } else {
+                    var image = ""
+                }
+                var defaultImage = "/static/book-not-found.png"
+                if(detailjson.volumeInfo.infoLink) {
+                    var url = detailjson.volumeInfo.infoLink
+                } else {
+                    var url = ""
+                }
+                if(detailjson.volumeInfo.previewLink) {
+                    var previewLink = detailjson.volumeInfo.previewLink
+                } else {
+                    var previewLink = ""
+                }
+                if(detailjson.accessInfo.webReaderLink) {
+                    var webReaderLink = detailjson.accessInfo.webReaderLink
+                } else {
+                    var webReaderLink = ""
+                }
+
+                $(".title").append(title)
+
+                if (subtitle != "") {
+                    $(".title").append(":")
+                    $(".subtitle").append(subtitle)
+                }
+
+                $(".authors").append(author)
+
+                var categories = '<br>No Categories Listed.'; // Display if no categories
+                if (detailjson.volumeInfo.categories && detailjson.volumeInfo.categories.length > 0) {
+                    categories = '<br>' + detailjson.volumeInfo.categories.join('<br>');
+                }
+				// Display only the year of the publication date
+                // Substring function accomplishes this because all dates are in format "YYYY-MM-DD"
+				var metadata = (detailjson.volumeInfo.publisher || 'Unknown Publisher') + 
+					', ' + detailjson.volumeInfo.publishedDate.substring(0, 4) + ' - ' + (detailjson.volumeInfo.pageCount || 'Unknown') + ' pages' + categories;
+				$(".metadata").html(metadata);
+
+                $(".description").append(description)
+
+                // Obtain ISBN numbers from JSON data, add to isbn paragraph
+				var isbn = 'ISBN: Not Listed'; // Display not listed if no ISBNs found
+                if (detailjson.volumeInfo.industryIdentifiers && detailjson.volumeInfo.industryIdentifiers.length > 0) {
+                    isbn = 'ISBN: ';
+                    for (var i in detailjson.volumeInfo.industryIdentifiers) {
+                        if (i > 0) {
+                            isbn += ', ';
+                        }
+                        isbn += detailjson.volumeInfo.industryIdentifiers[i].identifier;
+                    }
+                }
+				$(".isbn").html(isbn);
+
+                $("#url").text(url).attr("href", url)
+
+                if (image.includes("http")) {
+                    $(".cover-photo").attr("src", image)
+                } else {
+                    $(".cover-photo").attr("src", defaultImage)
+                }
+
+                if (previewLink != "") {
+                    $(".previewlink").html("<a href='" + previewLink + "'>View on Google Books</a>")
+                }
+                if (url != "") {
+                    $(".detailurl").html("<a href='" + url + "'>View on Google Play</a>")
+                }
+                if (webReaderLink != "") {
+                    $(".webreaderlink").html("<a href='" + webReaderLink + "'>Open in Web Reader</a>")
+                }
+            });
+        }
+        function displayBookshelf() {
+            var service_point = "https://www.googleapis.com/books/v1/users/113197365570457724418/bookshelves/1001/volumes";
+    
+            $.getJSON(service_point, function (json) {
+    
+                resultHTML = "";
+                for (i in json.items) {
+                    var booktitle = json.items[i].volumeInfo.title;
+                    var bookid = json.items[i].id;
+                    // Set src for image, or use a default image if not available
+                    var cover = "";
+                    if (json.items[i].volumeInfo.imageLinks != null) {
+                        var thumbnail = json.items[i].volumeInfo.imageLinks.thumbnail;
+                        if (thumbnail.includes("http")) {
+                            cover = thumbnail;
+                        } else {
+                            cover = "/static/book-not-found.png";
+                        }
+                    } else {
+                        cover = "/static/book-not-found.png";
+                    }
+    
+                    resultHTML += "<div class='book'>";
+                    resultHTML += "<img class='bookimg' src='" + cover + "'>";
+                    // Use javascript:void(0) instead of # to prevent page change
+                    resultHTML += "<div class='bookright'><a href='javascript:void(0);' onclick='displayDetails(\"" + bookid + "\"); return false;'>" + booktitle + "</a></div>";
+                    resultHTML += "</div>";;
+                }
+                // Add book divs to the #bookcontainer div
+                $("#bookcontainer").html(resultHTML);
+                // Display the total number of books found
+                var total = json.totalItems;
+                $("#resultcount").text("Showing " + total + " results in bookshelf with ID 1001 for User 113197365570457724418. Click on a book and view details below.");
+            });
+        }
+        // This function is called when "Book Search" tab is clicked
+        function showBooksSearch() {
+            // Update CSS class for active tab (Book Search)
+            updateActiveLink('Books Search');
+            // Clear, hide, and show elements to simulate tab switch
+            $("#bookdetail").hide();
+            $("#bsearchinfo").show();
+            $("#resultcount").empty();
+            $(".searchform").show();
+            $("#bookcontainer").empty();
+        }
+        // This function is called when "My Bookshelf" tab is clicked
+        function showMyBookshelf() {
+            // Update CSS class for active tab (My Bookshelf)
+            updateActiveLink('My Bookshelf');
+            // Clear, hide, and show elements to simulate tab switch
+            $("#bookdetail").hide();
+            $("#bsearchinfo").hide();
+            $("#resultcount").empty();
+            $(".searchform").hide();
+            $("#pagination").empty();
+            $("#bookcontainer").empty();
+            // Finally, call displayBookshelf to show the bookshelf books
+            displayBookshelf();
+        }
+        // Update CSS class for active tab
+        function updateActiveLink(clickedItem) {
+            const links = document.querySelectorAll('.m3links li');
+            links.forEach(li => {
+                // Access the span inside each li
+                const spanText = li.querySelector('span').textContent;
+                if (spanText === clickedItem) {
+                    li.className = 'm3active';
+                } else {
+                    li.className = 'm3inactive';
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<header>
+	<img class="logo" src="/static/logo.png" alt="Alex Bates">
+	<nav class="navlinks">
+		<ul>
+			<li><a href="/">Home</a></li>
+			<li><a href="/milestone1/single-book/">Milestone 1</a></li>
+			<li><a href="/milestone2/">Milestone 2</a></li>
+			<li><a href="/milestone3/">Milestone 3</a></li>
+			<li><a href="/milestone4/">Milestone 4</a></li>
+		</ul>
+	</nav>
+</header>
+<nav class="m3linksnav">
+    <ul class="m3links">
+        <li class="m3active"><span onclick="showBooksSearch();">Books Search</span></li>
+        <li class="m3inactive"><span onclick="showMyBookshelf();">My Bookshelf</span></li>
+    </ul>
+</nav>
+<main>
+    <p id="bsearchinfo" class="pageinfo">Use this tool to find books on Google Books by title, author, or keyword.</p>
+
+    <div class="searchform">
+        <input id="search-input" id="name" name="name" placeholder="Search Books" required type="text">
+        <button class="search-btn" name="submit" type="submit">
+            <span class="searchbtn-icon"><img src="/static/search.png" alt=""></span>
+        </button>
+    </div>
+
+	<p id="resultcount" class="pageinfo"></p>
+    <div id="bookcontainer"></div>
+    <div id="pagination"></div>
+    <div id="bookdetail">
+        <h2>
+			<span class="title"></span>
+            <span class="subtitle"></span>
+		</h2>
+		<div class="bookdata">
+			<img class="cover-photo" src="" alt="Cover Photo">
+			<div class="booktext">
+				<p class="authors"></p>
+				<p class="metadata"></p>
+				<p class="description"></p>
+				<p class="isbn"></p>
+                <p class="previewlink"></p>
+                <p class="detailurl"></p>
+                <p class="webreaderlink"></p>
+			</div>
+		</div>
+    </div>
+</main>
+</body>
+</html>

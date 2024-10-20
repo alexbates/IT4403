@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Milestone 2 assignment from September 2024." />
+	<title>Milestone 2 - Alex Bates</title>
+	<script src="/static/jquery-3.7.1.min.js"></script>
+	<style>
+        /* GLOBAL STYLES */
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #ebebe3;
+            font-family: "Montserrat", sans-serif;
+        }
+        header {
+            background: #ffffff;
+            height: 60px;
+        }
+        .logo {
+            height: 40.5px;
+            width: 45px;
+            padding-left: 10px;
+            padding-top: 9px;
+        }
+        .navlinks {
+            float: right;
+            margin-right: 10px;
+        }
+        .navlinks a {
+            text-decoration: none;
+            color: #000000;
+            font-size: 18px;
+        }
+        .navlinks a:hover {
+            color: #1a1a1a;
+        }
+        .navlinks ul {
+            list-style-type: none;
+            display: flex;
+            margin: 0;
+        }
+        .navlinks ul li {
+            line-height: 60px;
+            padding-left: 26px;
+            font-weight: 600;
+        }
+        @media screen and (max-width: 740px) {
+            body {
+                width: 740px;
+            }
+        }
+        /* MILESTONE 2 SPECIFIC STYLES */
+        .m2linksnav {
+            background: #ffffff;
+            border-top: 1px solid #b8b8b8;
+            padding: 6px 10px;
+        }
+        .m2links {
+	        list-style-type: none;
+	        display: flex;
+	        margin-top: 0px;
+            margin-bottom: 0px;
+            padding-left: 0px;
+        }
+        .m2links li {
+	        line-height: 36px;
+	        padding-left: 12px;
+            padding-right: 12px;
+	        font-weight: 500;
+            border-radius: 8px;
+        }
+        .m2links li a {
+            text-decoration: none;
+        }
+        .active {
+            border: 1px solid #b8b8b8;
+        }
+        .active a {
+            color: #000000;
+        }
+        .inactive a {
+            color: #000000;
+        }
+        /* PAGE SPECIFIC STYLES */
+		main {
+			padding-left: 10px;
+			padding-right: 10px;
+			padding-top: 0px;
+		}
+		.pageinfo {
+            color: #acac98;
+            font-weight: 600;;
+        }
+        .pageinfo a {
+            color: #8b8aa1;
+        }
+		.book {
+            background-color: #ffffff;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+		.book h2 {
+			font-family: "Libre Baskerville", serif;
+			font-weight: 800;
+            margin-top: 0px;
+            margin-bottom: 14px;
+        }
+		/* Align child img and div elements side by side */
+        .bookdata {
+            display: flex;
+            align-items: flex-start;
+        }
+        .booktext a {
+            display: block;
+            padding-top: 10px;
+        }
+        .authors {
+            font-weight: bold;
+            margin-top: 0px;
+        }
+        .metadata {
+            color: #696969;
+			margin-bottom: 0px;
+        }
+        .subtitle {
+			font-size: 22px;
+			font-weight: normal;
+		}
+		.isbn {
+            color: #696969;
+            margin-bottom: 0px;
+        }
+        .cover-photo {
+            width: 140px;
+            height: 200px;
+            margin-right: 10px;
+        }
+        @media screen and (max-width: 600px) {
+            .bookdata {
+                flex-direction: column;
+            }
+            .cover-photo {
+                margin-right: 0px;
+                margin-bottom: 16px;
+            }
+        }
+	</style>
+    <script>
+        $(document).ready(function(){
+            var urlParams = new URLSearchParams(window.location.search);
+            var id = urlParams.get('id');
+
+            $("#idmessage").html("Displaying book with Google Books ID: " + id)
+
+            var service_point = 'https://www.googleapis.com/books/v1/volumes/' + id
+            $.getJSON(service_point, function(json){
+                var title = json.volumeInfo.title
+                if(json.volumeInfo.subtitle) {
+                    var subtitle = json.volumeInfo.subtitle
+                } else {
+                    var subtitle = ""
+                }
+                var author = json.volumeInfo.authors.join(', ')
+                var description = json.volumeInfo.description
+                var url = json.volumeInfo.infoLink
+                if(json.volumeInfo.imageLinks && json.volumeInfo.imageLinks.thumbnail) {
+                    var image = json.volumeInfo.imageLinks.thumbnail
+                } else {
+                    var image = ""
+                }
+                var defaultImage = "/static/book-not-found.png"
+                if(json.volumeInfo.infoLink) {
+                    var url = json.volumeInfo.infoLink
+                } else {
+                    var url = ""
+                }
+                if(json.volumeInfo.previewLink) {
+                    var previewLink = json.volumeInfo.previewLink
+                } else {
+                    var previewLink = ""
+                }
+                if(json.accessInfo.webReaderLink) {
+                    var webReaderLink = json.accessInfo.webReaderLink
+                } else {
+                    var webReaderLink = ""
+                }
+
+                $(".title").append(title)
+
+                if (subtitle != "") {
+                    $(".title").append(":")
+                    $(".subtitle").append(subtitle)
+                }
+
+                $(".authors").append(author)
+
+                var categories = '<br>No Categories Listed.'; // Display if no categories
+                if (json.volumeInfo.categories && json.volumeInfo.categories.length > 0) {
+                    categories = '<br>' + json.volumeInfo.categories.join('<br>');
+                }
+				// Display only the year of the publication date
+                // Substring function accomplishes this because all dates are in format "YYYY-MM-DD"
+				var metadata = (json.volumeInfo.publisher || 'Unknown Publisher') + 
+					', ' + json.volumeInfo.publishedDate.substring(0, 4) + ' - ' + (json.volumeInfo.pageCount || 'Unknown') + ' pages' + categories;
+				$(".metadata").html(metadata);
+
+                $(".description").append(description)
+
+                // Obtain ISBN numbers from JSON data, add to isbn paragraph
+				var isbn = 'ISBN: Not Listed'; // Display not listed if no ISBNs found
+                if (json.volumeInfo.industryIdentifiers && json.volumeInfo.industryIdentifiers.length > 0) {
+                    isbn = 'ISBN: ';
+                    for (var i in json.volumeInfo.industryIdentifiers) {
+                        if (i > 0) {
+                            isbn += ', ';
+                        }
+                        isbn += json.volumeInfo.industryIdentifiers[i].identifier;
+                    }
+                }
+				$(".isbn").html(isbn);
+
+                $("#url").text(url).attr("href", url)
+
+                if (image.includes("http")) {
+                    $(".cover-photo").attr("src", image)
+                } else {
+                    $(".cover-photo").attr("src", defaultImage)
+                }
+
+                if (previewLink != "") {
+                    $(".booktext").append("<a href='" + previewLink + "'>View on Google Books</a>")
+                }
+                if (url != "") {
+                    $(".booktext").append("<a href='" + url + "'>View on Google Play</a>")
+                }
+                if (webReaderLink != "") {
+                    $(".booktext").append("<a href='" + webReaderLink + "'>Open in Web Reader</a>")
+                }
+
+            });
+        });
+    </script>
+</head>
+<body>
+<header>
+	<img class="logo" src="/static/logo.png" alt="Alex Bates">
+	<nav class="navlinks">
+		<ul>
+			<li><a href="/">Home</a></li>
+			<li><a href="/milestone1/single-book/">Milestone 1</a></li>
+			<li><a href="/milestone2/">Milestone 2</a></li>
+			<li><a href="/milestone3/">Milestone 3</a></li>
+			<li><a href="/milestone4/">Milestone 4</a></li>
+		</ul>
+	</nav>
+</header>
+<nav class="m2linksnav">
+    <ul class="m2links">
+        <li class="inactive"><a href="/milestone2/">Home</a></li>
+        <li class="inactive"><a href="/milestone2/my-bookshelf/">My Bookshelf</a></li>
+    </ul>
+</nav>
+<main>
+	<p id="idmessage" class="pageinfo">Displaying 1 book.</p>
+	<div class="book">
+		<h2>
+			<span class="title"></span>
+            <span class="subtitle"></span>
+		</h2>
+		<div class="bookdata">
+			<img class="cover-photo" src="" alt="Cover Photo">
+			<div class="booktext">
+				<p class="authors"></p>
+				<p class="metadata"></p>
+				<p class="description"></p>
+				<p class="isbn"></p>
+			</div>
+		</div>
+	</div>
+</main>
+</body>
+</html>

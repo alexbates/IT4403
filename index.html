@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Website of Alex Bates for IT 4403 class at Kennesaw State University." />
+	<title>Home - Alex Bates</title>
+	<script src="/static/jquery-3.7.1.min.js"></script>
+	<style>
+		/* GLOBAL STYLES */
+		@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+		@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+		html, body {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			background: #ebebe3;
+			font-family: "Montserrat", sans-serif;
+		}
+		header {
+			background: #ffffff;
+			height: 60px;
+		}
+		.logo {
+			height: 40.5px;
+			width: 45px;
+			padding-left: 10px;
+			padding-top: 9px;
+		}
+		.navlinks {
+			float: right;
+			margin-right: 10px;
+		}
+		.navlinks a {
+			text-decoration: none;
+			color: #000000;
+			font-size: 18px;
+		}
+		.navlinks a:hover {
+			color: #1a1a1a;
+		}
+		.navlinks ul {
+			list-style-type: none;
+			display: flex;
+			margin: 0;
+		}
+		.navlinks ul li {
+			line-height: 60px;
+			padding-left: 26px;
+			font-weight: 600;
+		}
+		@media screen and (max-width: 740px) {
+            body {
+                width: 740px;
+            }
+        }
+		/* PAGE SPECIFIC STYLES */
+		main {
+			padding-left: 10px;
+			padding-right: 10px;
+			padding-top: 0px;
+		}
+		.box {
+			background: #ffffff;
+			padding: 10px;
+			margin-bottom: 10px;
+		}
+		.box h2 {
+			margin-top: 0;
+		}
+		.box p:last-child {
+			margin-bottom: 0;
+		}
+		hr {
+			background-image: linear-gradient(45deg,
+				hsla(0, 0%, 5%, 0),
+				hsla(0, 0%, 5%, 0) 33.33%,
+				hsla(0, 0%, 5%, 1) 33.33%,
+				hsla(0, 0%, 5%, 1) 66.67%,
+				hsla(0, 0%, 5%, 0) 66.67%,
+				hsla(0, 0%, 5%, 0) 100%);
+			background-size: 10px 100%;
+			border: none;
+			height: 8px;
+			margin-bottom: 26px;
+		}
+		h1, h2 {
+			font-family: "Libre Baskerville", serif;
+		}
+		h1 {
+			color: #acac98;
+		}
+		svg {
+			padding-left: 3px;
+			margin-bottom: -4px;
+		}
+	</style>
+</head>
+<body>
+<header>
+	<img class="logo" src="/static/logo.png" alt="Alex Bates">
+	<nav class="navlinks">
+		<ul>
+			<li><a href="/">Home</a></li>
+			<li><a href="/milestone1/single-book/">Milestone 1</a></li>
+			<li><a href="/milestone2/">Milestone 2</a></li>
+			<li><a href="/milestone3/">Milestone 3</a></li>
+			<li><a href="/milestone4/">Milestone 4</a></li>
+		</ul>
+	</nav>
+</header>
+<main>
+	<h1>Alex's Website</h1>
+	<!--<hr>-->
+	<div class="box">
+		<!-- Credits to iconior for the following icon - https://iconoir.com/ -->
+		<h2>Welcome <svg width="28px" height="28px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M6.81818 22L6.81822 19.143C6.51904 16.1656 3.00001 14.5717 3.00001 10.0004C3 5.42914 5.72738 1.94374 11.1819 2.00069C15.1094 2.04169 18.8182 4.28632 18.8182 8.8576L21 12.286C21 14.5717 18.8182 14.5717 18.8182 14.5717C18.8182 14.5717 19.3636 20.2858 14.4545 20.2858L14.4545 22" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11 12C12.1046 12 13 11.1046 13 10C13 8.89543 12.1046 8 11 8C10.6357 8 10.2942 8.09739 10 8.26756C9.4022 8.61337 9 9.25972 9 10C9 10.7403 9.4022 11.3866 10 11.7324C10.2942 11.9026 10.6357 12 11 12Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M11 13C12.6569 13 14 11.6569 14 10C14 8.34315 12.6569 7 11 7C9.34315 7 8 8.34315 8 10C8 11.6569 9.34315 13 11 13Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="0.3 2"></path></svg></h2>
+		<p>Hi, my name is Alex Bates and I'm an IT major and junior at Kennesaw State University.</p>
+		<p>The purpose of this website is to showcase exercises and projects for the class.</p>
+	</div>
+	<div class="box">
+		<!-- Credits to iconior for the following icon - https://iconoir.com/ -->
+		<h2>Course Information  <svg width="28px" height="28px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M2.57331 8.46334L11.2317 4.13416C11.4006 4.04971 11.5994 4.04971 11.7683 4.13416L20.4267 8.46334C20.8689 8.68446 20.8689 9.31554 20.4267 9.53666L11.7683 13.8658C11.5994 13.9503 11.4006 13.9503 11.2317 13.8658L2.57331 9.53666C2.13108 9.31554 2.13108 8.68446 2.57331 8.46334Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M22.5 13L22.5 9.5L20.5 8.5" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M4.5 10.5V15.9121C4.5 16.6843 4.94459 17.3876 5.6422 17.7188L10.6422 20.0928C11.185 20.3505 11.815 20.3505 12.3578 20.0928L17.3578 17.7188C18.0554 17.3876 18.5 16.6843 18.5 15.9121V10.5" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></h2>
+		<p><strong>Course:</strong> IT 4403 (Advanced Web and Mobile App)</p>
+		<p><strong>Professor:</strong> Pranita Shedage</p>
+		<p><strong>Department:</strong> <a href="https://ccse.kennesaw.edu/it/">Information Technology</a></p>
+	</div>
+	<div class="box">
+		<!-- Credits to iconior for the following icon - https://iconoir.com/ -->
+		<h2>Projects <svg width="28px" height="28px" viewBox="0 0 24 24" stroke-width="1.5" fill="none" xmlns="http://www.w3.org/2000/svg" color="#000000"><path d="M11 21H4C2.89543 21 2 20.1046 2 19V14.4599C2 13.7605 2.36531 13.1119 2.9634 12.7495L6.4634 10.6282C7.10053 10.2421 7.89947 10.2421 8.5366 10.6282L12.0366 12.7495C12.6347 13.1119 13 13.7605 13 14.4599V19C13 20.1046 12.1046 21 11 21Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M6.5 10V6.45985C6.5 5.76049 6.86531 5.11193 7.4634 4.74946L10.9634 2.62824C11.6005 2.24211 12.3995 2.24211 13.0366 2.62824L16.5366 4.74946C17.1347 5.11194 17.5 5.76049 17.5 6.45985V10" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M16 21H20C21.1046 21 22 20.1046 22 19V14.4599C22 13.7605 21.6347 13.1119 21.0366 12.7495L17.5314 10.6251C16.897 10.2406 16.1019 10.2389 15.4658 10.6205L14.8334 11" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M9 21V17.6C9 17.2686 8.73137 17 8.4 17L6.6 17C6.26863 17 6 17.2686 6 17.6V21" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M18 21V17.6C18 17.2686 17.7314 17 17.4 17L16 17" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></h2>
+		<p>Use the navigation links at the top of page to view Milestone pages.</p>
+	</div>
+</main>
+</body>
+</html>

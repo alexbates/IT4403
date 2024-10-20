@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Milestone 2 assignment from September 2024." />
+	<title>Milestone 2 - Alex Bates</title>
+	<script src="/static/jquery-3.7.1.min.js"></script>
+	<style>
+        /* GLOBAL STYLES */
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #ebebe3;
+            font-family: "Montserrat", sans-serif;
+        }
+        header {
+            background: #ffffff;
+            height: 60px;
+        }
+        .logo {
+            height: 40.5px;
+            width: 45px;
+            padding-left: 10px;
+            padding-top: 9px;
+        }
+        .navlinks {
+            float: right;
+            margin-right: 10px;
+        }
+        .navlinks a {
+            text-decoration: none;
+            color: #000000;
+            font-size: 18px;
+        }
+        .navlinks a:hover {
+            color: #1a1a1a;
+        }
+        .navlinks ul {
+            list-style-type: none;
+            display: flex;
+            margin: 0;
+        }
+        .navlinks ul li {
+            line-height: 60px;
+            padding-left: 26px;
+            font-weight: 600;
+        }
+        @media screen and (max-width: 740px) {
+            body {
+                width: 740px;
+            }
+        }
+        /* MILESTONE 2 SPECIFIC STYLES */
+        .m2linksnav {
+            background: #ffffff;
+            border-top: 1px solid #b8b8b8;
+            padding: 6px 10px;
+        }
+        .m2links {
+	        list-style-type: none;
+	        display: flex;
+	        margin-top: 0px;
+            margin-bottom: 0px;
+            padding-left: 0px;
+        }
+        .m2links li {
+	        line-height: 36px;
+	        padding-left: 12px;
+            padding-right: 12px;
+	        font-weight: 500;
+            border-radius: 8px;
+        }
+        .m2links li a {
+            text-decoration: none;
+        }
+        .active {
+            border: 1px solid #b8b8b8;
+        }
+        .active a {
+            color: #000000;
+        }
+        .inactive a {
+            color: #000000;
+        }
+        /* PAGE SPECIFIC STYLES */
+		main {
+			padding-left: 10px;
+			padding-right: 10px;
+			padding-top: 0px;
+		}
+		.pageinfo {
+            color: #acac98;
+            font-weight: 600;;
+        }
+        .pageinfo a {
+            color: #8b8aa1;
+        }
+        #page-select {
+            background: #ffffff;
+            border: none;
+            box-shadow: none;
+            color: #000000;
+            font-size: 18px;
+            height: 38px;
+            padding-left: 10px;
+            padding-right: 10px;
+            margin-bottom: 20px;
+            width: 130px;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        /* Arrow after select element */
+        #pagination:after {
+            position: relative;
+            content: "";
+            top: 14px;
+            right: 22px;
+            width: 0;
+            height: 0;
+            border: 6px solid transparent;
+            border-color: #000000 transparent transparent transparent;
+        }
+        #bookcontainer {
+            display: flex;
+            flex-wrap: wrap;
+        }
+		.book {
+            background-color: #ffffff;
+            padding: 0px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            width: calc(25% - 7.5px);
+            border-radius: 10px;
+        }
+        .book:nth-of-type(4n) {
+            margin-right: 0px;
+        }
+        .bookimg {
+            border-radius: 10px 0px 0px 10px;
+            float: left;
+            height: 200px;
+            width: 140px;
+        }
+        .bookright {
+            overflow: hidden;
+            padding-left: 6px;
+            padding-right: 6px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            float: right;
+            width: calc(100% - 152px);
+        }
+        .bookright a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        .searchform {
+            margin-top: 10px; 
+            margin-bottom: 10px; 
+        }
+        #search-input {
+            background: #ffffff;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            font-size: 18px;
+            height: 40px;
+            margin-right: 5px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            padding-left: 10px;
+            padding-right: 10px;
+            width: calc(100% - 122px);
+            -webkit-box-shadow: none;
+        }
+        #search-input:focus {box-shadow: none; outline: 0; -webkit-box-shadow: none;}
+        #search-input::placeholder {color: #bababa;}
+        .search-btn {
+            border: none;
+            background: #2980b9;
+            cursor: pointer;
+            float: right;
+            height: 40px;
+            padding: 0;
+            width: 90px;
+        }
+        .search-btn:active, .search-btn.active, .search-btn:hover, .search-btn:focus {outline: none;}
+        .searchbtn-icon {display: block; height: 20px; padding-left: 34px; width: 20px;}
+        .searchbtn-icon img {height: 100%; width: 100%;}
+        @media screen and (max-width: 1020px) {
+            .book {
+                width: calc(33.33% - 6.67px);
+            }
+            .book:nth-of-type(4n) {
+                margin-right: 10px;
+            }
+            .book:nth-of-type(3n) {
+                margin-right: 0px;
+            }
+        }
+	</style>
+    <script>
+        $(function(){
+            // Using array to store books, other variables for pagination
+            var books = [];
+            var currentPage = 1;
+            var booksPerPage = 12;
+    
+            function displayBooks(page) {
+                var startIndex = (page - 1) * booksPerPage;
+                var endIndex = startIndex + booksPerPage;
+                var booksToShow = books.slice(startIndex, endIndex);
+                var resultHTML = "";
+                // Set src for image, or use a default image if not available
+                var cover = "";
+                for (var i in booksToShow) {
+                    var booktitle = booksToShow[i].volumeInfo.title;
+                    var bookid = booksToShow[i].id;
+                    if (booksToShow[i].volumeInfo.imageLinks != null) {
+                        var thumbnail = booksToShow[i].volumeInfo.imageLinks.thumbnail;
+                        if (thumbnail.includes("http")) {
+                            cover = thumbnail;
+                        } else {
+                            cover = "/static/book-not-found.png";
+                        }
+                    } else {
+                        cover = "/static/book-not-found.png";
+                    }
+    
+                    resultHTML += "<div class='book'>";
+                    resultHTML += "<img class='bookimg' src='" + cover + "'>";
+                    resultHTML += "<div class='bookright'><a href='/milestone2/book-details/?id=" + bookid + "'>" + booktitle + "</a></div>";
+                    resultHTML += "</div>";
+                }
+                // Add book divs to the #bookcontainer div
+                $("#bookcontainer").html(resultHTML);
+    
+                // Create the dropdown for pages
+                var totalPages = Math.ceil(books.length / booksPerPage);
+                var selectHTML = "<select id='page-select'>";
+                for (var i = 1; i <= totalPages; i++) {
+                    selectHTML += "<option value='" + i + "'";
+                    
+                    // Check if the current page is the selected page
+                    if (i === page) {
+                        selectHTML += " selected";
+                    }
+                    
+                    selectHTML += ">Page " + i + "</option>";
+                }
+                selectHTML += "</select>";
+                $("#pagination").html(selectHTML);
+    
+                // Handle page selection, retrieve the selected page number
+                $('#page-select').on('change', function() {
+                    currentPage = parseInt($(this).val());
+                    displayBooks(currentPage);
+                });
+            }
+    
+            function performSearch() {
+                // Prevent the form from submitting normally
+                event.preventDefault();
+                // Get the value of the search input
+                var term = $('#search-input').val().trim();
+                if(term !== "") {
+                    // It seems that Google Books returns 400 Bad Request if exceed 40 results
+                    var parameter = "?q=" + term + "&startIndex=30&maxResults=40";
+                    var service_point = "https://www.googleapis.com/books/v1/volumes/" + parameter;
+    
+                    $.getJSON(service_point, function (json) {
+                        // Add books to the array up top
+                        books = json.items;
+                        var total = json.totalItems;
+                        $("#resultcount").text("Showing " + books.length + " of " + total + " results for \"" + term + "\".");
+                        // Reset to first page and display first page of results
+                        currentPage = 1;
+                        displayBooks(currentPage);
+                    });
+                } else {
+                    // Show error message if input is empty
+                    $("#resultcount").text("Please enter a search term."); 
+                }
+            }
+
+            // Handle search button click
+            $('.search-btn').on('click', function(event) {
+                event.preventDefault();
+                performSearch();
+            });
+
+            // Handle Enter key press in the search input
+            $('#search-input').on('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    performSearch();
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<header>
+	<img class="logo" src="/static/logo.png" alt="Alex Bates">
+	<nav class="navlinks">
+		<ul>
+			<li><a href="/">Home</a></li>
+			<li><a href="/milestone1/single-book/">Milestone 1</a></li>
+			<li><a href="/milestone2/">Milestone 2</a></li>
+			<li><a href="/milestone3/">Milestone 3</a></li>
+			<li><a href="/milestone4/">Milestone 4</a></li>
+		</ul>
+	</nav>
+</header>
+<nav class="m2linksnav">
+    <ul class="m2links">
+        <li class="active"><a href="/milestone2/">Home</a></li>
+        <li class="inactive"><a href="/milestone2/my-bookshelf/">My Bookshelf</a></li>
+    </ul>
+</nav>
+<main>
+    <p class="pageinfo">Use this tool to find books on Google Books by title, author, or keyword.</p>
+
+    <div class="searchform">
+        <input id="search-input" id="name" name="name" placeholder="Search Books" required type="text">
+        <button class="search-btn" name="submit" type="submit">
+            <span class="searchbtn-icon"><img src="/static/search.png" alt=""></span>
+        </button>
+    </div>
+
+	<p id="resultcount" class="pageinfo"></p>
+    <div id="pagination"></div>
+    <div id="bookcontainer"></div>
+</main>
+</body>
+</html>

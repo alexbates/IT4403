@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Milestone 1 assignment from September 2024." />
+	<title>Milestone1 - Alex Bates</title>
+	<script src="/static/jquery-3.7.1.min.js"></script>
+	<style>
+        /* GLOBAL STYLES */
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #ebebe3;
+            font-family: "Montserrat", sans-serif;
+        }
+        header {
+            background: #ffffff;
+            height: 60px;
+        }
+        .logo {
+            height: 40.5px;
+            width: 45px;
+            padding-left: 10px;
+            padding-top: 9px;
+        }
+        .navlinks {
+            float: right;
+            margin-right: 10px;
+        }
+        .navlinks a {
+            text-decoration: none;
+            color: #000000;
+            font-size: 18px;
+        }
+        .navlinks a:hover {
+            color: #1a1a1a;
+        }
+        .navlinks ul {
+            list-style-type: none;
+            display: flex;
+            margin: 0;
+        }
+        .navlinks ul li {
+            line-height: 60px;
+            padding-left: 26px;
+            font-weight: 600;
+        }
+        @media screen and (max-width: 740px) {
+            body {
+                width: 740px;
+            }
+        }
+        /* PAGE SPECIFIC STYLES */
+        .m1linksnav {
+            background: #ffffff;
+            border-top: 1px solid #b8b8b8;
+            padding: 6px 10px;
+        }
+        .m1links {
+	        list-style-type: none;
+	        display: flex;
+	        margin-top: 0px;
+            margin-bottom: 0px;
+            padding-left: 0px;
+        }
+        .m1links li {
+	        line-height: 36px;
+	        padding-left: 12px;
+            padding-right: 12px;
+	        font-weight: 500;
+            border-radius: 8px;
+        }
+        .m1links li a {
+            text-decoration: none;
+        }
+        .active {
+            border: 1px solid #b8b8b8;
+        }
+        .active a {
+            color: #000000;
+        }
+        .inactive a {
+            color: #000000;
+        }
+
+        main {
+			padding-left: 10px;
+			padding-right: 10px;
+			padding-top: 0px;
+		}
+        .pageinfo {
+            color: #acac98;
+            font-weight: 600;;
+        }
+        .pageinfo a {
+            color: #8b8aa1;
+        }
+        .book {
+            background-color: #ffffff;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .book h2 {
+            font-family: "Libre Baskerville", serif;
+			font-weight: 800;
+            margin-top: 0px;
+            margin-bottom: 14px;
+        }
+        /* Align child img and div elements side by side */
+        .bookdata {
+            display: flex;
+            align-items: flex-start;
+        }
+        .authors {
+            font-weight: bold;
+            margin-top: 0px;
+        }
+        .metadata {
+            color: #696969;
+        }
+		.subtitle {
+			font-size: 22px;
+			font-weight: normal;
+		}
+		.description {
+			line-height: 1.5em;
+			overflow: hidden;
+			max-height: 6.2em; /* Limit to 4 lines */
+			margin-bottom: 0px; /* Align "Show More" closer to bottom of description */
+		}
+		.expanded {
+            max-height: none;
+        }
+		.show-link {
+            color: blue;
+            cursor: pointer;
+			display: none; /* Hide this link by default */
+        }
+        .isbn {
+            color: #696969;
+            margin-bottom: 0px;
+        }
+        .cover-photo {
+            margin-right: 10px;
+        }
+        @media screen and (max-width: 600px) {
+            .bookdata {
+                flex-direction: column;
+            }
+            .cover-photo {
+                margin-right: 0px;
+                margin-bottom: 16px;
+            }
+        }
+	</style>
+    <script>
+        $(document).ready(function(){
+            $.getJSON("/static/google-books-search.json", function(json){
+                // Display number of books found before list of books
+                if (json.items) {
+                    $(".bookcount").text(json.items.length);
+                } else {
+                    // Display 0 as book count if items json array is not found
+                    $(".bookcount").html("0");
+                }
+
+                $.each(json.items, function(index, book){
+                    // This variable makes for less typing
+                    var bookInfo = book.volumeInfo;
+                    var bookSubtitle = ''; // Default to empty string if no subtitle property
+                    if (bookInfo.subtitle) {
+                        bookSubtitle = ': <span class="subtitle">' + bookInfo.subtitle + '</span>';
+                    }
+                    var bookImage = ''; // Default to empty string if no imageLinks property
+                    if (bookInfo.imageLinks) {
+                        bookImage = '<img class="cover-photo" src="' + bookInfo.imageLinks.thumbnail + '" alt="Cover Photo">';
+                    }
+                    var bookAuthors = ''; // Default to empty string if no authors property
+                    if (bookInfo.authors && bookInfo.authors.length > 0) {
+                        bookAuthors = '<p class="authors">Author(s): ' + bookInfo.authors.join(', ') + '</p>';
+                    }
+                    var categories = ' - '; // Display dash if no categories
+                    if (bookInfo.categories && bookInfo.categories.length > 0) {
+                        categories = ' - ' + bookInfo.categories.join(', ') + ' - ';
+                    }
+                    // Display only the year of the publication date
+                    var metadata = '<p class="metadata">' + (bookInfo.publisher || 'Unknown Publisher') + ', ' + bookInfo.publishedDate.substring(0, 4) + categories + (bookInfo.pageCount || 'Unknown') + ' pages' + '</p>';
+
+                    var isbn = '<p class="isbn">ISBN: Not Listed</p>'; // Display not listed if no ISBNs found
+                    if (bookInfo.industryIdentifiers && bookInfo.industryIdentifiers.length > 0) {
+                        var isbnNumbers = [];
+                        for (var i = 0; i < bookInfo.industryIdentifiers.length; i++) {
+                            isbnNumbers.push(bookInfo.industryIdentifiers[i].identifier);
+                        }
+                        isbn = '<p class="isbn">ISBN: ' + isbnNumbers.join(', ') + '</p>';
+                    }
+
+                    // Form a div element for each book
+                    var bookHtml = '<div class="book">' +
+                        '<h2>' + bookInfo.title + bookSubtitle + '</h2>' + '<div class="bookdata">' + bookImage + '<div>' + bookAuthors + metadata +
+                        '<p class="description">' + (bookInfo.description || 'No description available.') + '</p>' +
+                        '<a class="show-link">Show More</a>' + isbn +
+                        '</div></div></div>';
+                    
+                    // Append the book div to #book-container div
+                    $("#book-container").append(bookHtml);
+                });
+
+                // setTimeout is used to ensure that the DOM is fully loaded before checking heights
+                // Check if description paragraph height is more than 4 lines
+                // If so, display the "Show More" link that is hidden by default
+                setTimeout(function() {
+                    $(".description").each(function() {
+                        var description = $(this);
+                        var link = description.siblings(".show-link");
+                        
+                        if (description[0].scrollHeight > description.height()) {
+                            link.css("display", "block");
+                        }
+                    });
+                }, 0);
+
+                // This function handles cliking of the "Show More" link
+				$(".show-link").click(function(){
+                    var description = $(this).siblings(".description");
+                    var link = $(this);
+                    
+                    description.toggleClass("expanded");
+                    if (description.hasClass("expanded")) {
+                        link.text("Show Less");
+                    } else {
+                        link.text("Show More");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<header>
+    <img class="logo" src="/static/logo.png" alt="Alex Bates">
+    <nav class="navlinks">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/milestone1/single-book/">Milestone 1</a></li>
+            <li><a href="/milestone2/">Milestone 2</a></li>
+            <li><a href="/milestone3/">Milestone 3</a></li>
+            <li><a href="/milestone4/">Milestone 4</a></li>
+        </ul>
+    </nav>
+</header>
+<nav class="m1linksnav">
+    <ul class="m1links">
+        <li class="inactive"><a href="/milestone1/single-book/">Single Book</a></li>
+        <li class="active"><a href="/milestone1/multiple-books/">Multiple Books</a></li>
+        <li class="inactive"><a href="/milestone1/open-library/">Open Library</a></li>
+    </ul>
+</nav>
+<main>
+    <p class="pageinfo">Displaying <span class="bookcount"></span> books.</p>
+    <div id="book-container"></div>
+	<p class="pageinfo">Data source is a JSON file: <a href="/static/google-books-search.json">google-books-search.json</a></p>
+</main>
+</body>
+</html>

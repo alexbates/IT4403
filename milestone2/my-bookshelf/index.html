@@ -1,0 +1,211 @@
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Milestone 2 assignment from September 2024." />
+	<title>Milestone 2 - Alex Bates</title>
+	<script src="/static/jquery-3.7.1.min.js"></script>
+	<style>
+        /* GLOBAL STYLES */
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #ebebe3;
+            font-family: "Montserrat", sans-serif;
+        }
+        header {
+            background: #ffffff;
+            height: 60px;
+        }
+        .logo {
+            height: 40.5px;
+            width: 45px;
+            padding-left: 10px;
+            padding-top: 9px;
+        }
+        .navlinks {
+            float: right;
+            margin-right: 10px;
+        }
+        .navlinks a {
+            text-decoration: none;
+            color: #000000;
+            font-size: 18px;
+        }
+        .navlinks a:hover {
+            color: #1a1a1a;
+        }
+        .navlinks ul {
+            list-style-type: none;
+            display: flex;
+            margin: 0;
+        }
+        .navlinks ul li {
+            line-height: 60px;
+            padding-left: 26px;
+            font-weight: 600;
+        }
+        @media screen and (max-width: 740px) {
+            body {
+                width: 740px;
+            }
+        }
+        /* MILESTONE 2 SPECIFIC STYLES */
+        .m2linksnav {
+            background: #ffffff;
+            border-top: 1px solid #b8b8b8;
+            padding: 6px 10px;
+        }
+        .m2links {
+	        list-style-type: none;
+	        display: flex;
+	        margin-top: 0px;
+            margin-bottom: 0px;
+            padding-left: 0px;
+        }
+        .m2links li {
+	        line-height: 36px;
+	        padding-left: 12px;
+            padding-right: 12px;
+	        font-weight: 500;
+            border-radius: 8px;
+        }
+        .m2links li a {
+            text-decoration: none;
+        }
+        .active {
+            border: 1px solid #b8b8b8;
+        }
+        .active a {
+            color: #000000;
+        }
+        .inactive a {
+            color: #000000;
+        }
+        /* PAGE SPECIFIC STYLES */
+		main {
+			padding-left: 10px;
+			padding-right: 10px;
+			padding-top: 0px;
+		}
+        .pageinfo {
+            color: #acac98;
+            font-weight: 600;;
+        }
+        .pageinfo a {
+            color: #8b8aa1;
+        }
+        #bookcontainer {
+            display: flex;
+            flex-wrap: wrap;
+        }
+		.book {
+            background-color: #ffffff;
+            padding: 0px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            width: calc(25% - 7.5px);
+            border-radius: 10px;
+        }
+        .book:nth-of-type(4n) {
+            margin-right: 0px;
+        }
+        .bookimg {
+            border-radius: 10px 0px 0px 10px;
+            float: left;
+            height: 200px;
+            width: 140px;
+        }
+        .bookright {
+            overflow: hidden;
+            padding-left: 6px;
+            padding-right: 6px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            float: right;
+            width: calc(100% - 152px);
+        }
+        .bookright a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        @media screen and (max-width: 1020px) {
+            .book {
+                width: calc(33.33% - 6.67px);
+            }
+            .book:nth-of-type(4n) {
+                margin-right: 10px;
+            }
+            .book:nth-of-type(3n) {
+                margin-right: 0px;
+            }
+        }
+    </style>
+    <script>
+        $(function () {
+            var service_point = "https://www.googleapis.com/books/v1/users/113197365570457724418/bookshelves/1001/volumes";
+    
+            $.getJSON(service_point, function (json) {
+    
+                resultHTML = "";
+                for (i in json.items) {
+                    var booktitle = json.items[i].volumeInfo.title;
+                    var bookid = json.items[i].id;
+                    // Set src for image, or use a default image if not available
+                    var cover = "";
+                    if (json.items[i].volumeInfo.imageLinks != null) {
+                        var thumbnail = json.items[i].volumeInfo.imageLinks.thumbnail;
+                        if (thumbnail.includes("http")) {
+                            cover = thumbnail;
+                        } else {
+                            cover = "/static/book-not-found.png";
+                        }
+                    } else {
+                        cover = "/static/book-not-found.png";
+                    }
+    
+                    resultHTML += "<div class='book'>";
+                    resultHTML += "<img class='bookimg' src='" + cover + "'>";
+                    resultHTML += "<div class='bookright'><a href='/milestone2/book-details/?id=" + bookid + "'>" + booktitle + "</a></div>";
+                    resultHTML += "</div>";;
+                }
+                // Add book divs to the #bookcontainer div
+                $("#bookcontainer").html(resultHTML);
+                // Display the total number of books found
+                var total = json.totalItems;
+                $("#resultcount").text("Showing " + total + " results in bookshelf with ID 1001 for User 113197365570457724418.");
+            });
+        });
+    </script>
+</head>
+<body>
+<header>
+    <img class="logo" src="/static/logo.png" alt="Alex Bates">
+    <nav class="navlinks">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/milestone1/single-book/">Milestone 1</a></li>
+            <li><a href="/milestone2/">Milestone 2</a></li>
+            <li><a href="/milestone3/">Milestone 3</a></li>
+            <li><a href="/milestone4/">Milestone 4</a></li>
+        </ul>
+    </nav>
+</header>
+<nav class="m2linksnav">
+    <ul class="m2links">
+        <li class="inactive"><a href="/milestone2/">Home</a></li>
+        <li class="active"><a href="/milestone2/my-bookshelf/">My Bookshelf</a></li>
+    </ul>
+</nav>
+<main>
+    <p id="resultcount" class="pageinfo"></p>
+    <div id="bookcontainer"></div>
+</main>
+</body>
+</html>
