@@ -3,73 +3,767 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Milestone 4 assignment." />
+    <meta name="description" content="Milestone 3 assignment from October 2024." />
 	<title>Milestone 4 - Alex Bates</title>
 	<script src="/static/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.0/mustache.min.js"></script>
 	<style>
-		/* GLOBAL STYLES */
-		@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+        /* GLOBAL STYLES */
+        @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
 
-		@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-		html, body {
-			margin: 0;
-			padding: 0;
-		}
-		body {
-			background: #ebebe3;
-			font-family: "Montserrat", sans-serif;
-		}
-		header {
-			background: #ffffff;
-			height: 60px;
-		}
-		.logo {
-			height: 40.5px;
-			width: 45px;
-			padding-left: 10px;
-			padding-top: 9px;
-		}
-		.navlinks {
-			float: right;
-			margin-right: 10px;
-		}
-		.navlinks a {
-			text-decoration: none;
-			color: #000000;
-			font-size: 18px;
-		}
-		.navlinks a:hover {
-			color: #1a1a1a;
-		}
-		.navlinks ul {
-			list-style-type: none;
-			display: flex;
-			margin: 0;
-		}
-		.navlinks ul li {
-			line-height: 60px;
-			padding-left: 26px;
-			font-weight: 600;
-		}
-		@media screen and (max-width: 740px) {
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #ebebe3;
+            font-family: "Montserrat", sans-serif;
+        }
+        header {
+            background: #ffffff;
+            height: 60px;
+        }
+        .logo {
+            height: 40.5px;
+            width: 45px;
+            padding-left: 10px;
+            padding-top: 9px;
+        }
+        .navlinks {
+            float: right;
+            margin-right: 10px;
+        }
+        .navlinks a {
+            text-decoration: none;
+            color: #000000;
+            font-size: 18px;
+        }
+        .navlinks a:hover {
+            color: #1a1a1a;
+        }
+        .navlinks ul {
+            list-style-type: none;
+            display: flex;
+            margin: 0;
+        }
+        .navlinks ul li {
+            line-height: 60px;
+            padding-left: 26px;
+            font-weight: 600;
+        }
+        @media screen and (max-width: 740px) {
             body {
                 width: 740px;
             }
         }
-		/* PAGE SPECIFIC STYLES */
+        /* MILESTONE 4 SPECIFIC STYLES */
+        .m4linksnav {
+            background: #ffffff;
+            border-top: 1px solid #b8b8b8;
+            padding: 6px 10px;
+        }
+        .m4links {
+	        list-style-type: none;
+	        display: flex;
+	        margin-top: 0px;
+            margin-bottom: 0px;
+            padding-left: 0px;
+        }
+        .m4links li {
+	        line-height: 36px;
+	        padding-left: 12px;
+            padding-right: 12px;
+	        font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .m4links li a {
+            text-decoration: none;
+        }
+        .m4active {
+            border: 1px solid #b8b8b8;
+        }
+        .m4active a {
+            color: #000000;
+        }
+        .m4inactive a {
+            color: #000000;
+        }
+        /* PAGE SPECIFIC STYLES */
 		main {
 			padding-left: 10px;
 			padding-right: 10px;
 			padding-top: 0px;
 		}
-		h1, h2,h3 {
+		.pageinfo {
+            color: #acac98;
+            font-weight: 600;;
+        }
+        .pageinfo a {
+            color: #8b8aa1;
+        }
+        #pagination {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        .pagebtn {
+            background: #ffffff;
+            border: none;
+            cursor: pointer;
+            font-family: "Montserrat", sans-serif;
+            font-size: 18px;
+            height: 40px;
+            margin-right: 5px;
+            width: 40px;
+        }
+        #resultcount2 {display: none;}
+        #resultcount, #resultcount2 {
+            line-height: 56px;
+            height: 44px;
+            margin-bottom: 10px;
+            margin-top: 14px;
+        }
+        .layoutbtn {
+            background: #ffffff;
+            border: none;
+            cursor: pointer;
+            font-family: "Montserrat", sans-serif;
+            font-size: 18px;
+            float: right;
+            height: 40px;
+            margin-right: 0px;
+            padding: 0px;
+            width: 40px;
+        }
+        .layoutbtnimg {
+            height: 26px;
+            width: 26px;
+            padding-top: 5px;
+        }
+        .active {
+            border: 1px solid #868686;
+        }
+        #bookcontainer, #bookcontainer2 {
+            display: flex;
+            flex-wrap: wrap;
+        }
+		.book {
+            background-color: #ffffff;
+            padding: 0px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            width: calc(25% - 7.5px);
+            border-radius: 10px;
+        }
+        .book:nth-of-type(4n) {
+            margin-right: 0px;
+        }
+        .bookimg {
+            border-radius: 10px 0px 0px 10px;
+            float: left;
+            height: 200px;
+            width: 140px;
+        }
+        .bookright {
+            overflow: hidden;
+            padding-left: 6px;
+            padding-right: 6px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+            float: right;
+            width: calc(100% - 152px);
+        }
+        .bookright a {
+            color: #2980b9;
+            text-decoration: none;
+        }
+        .searchform {
+            margin-top: 10px; 
+            margin-bottom: 10px; 
+        }
+        #search-input {
+            background: #ffffff;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            font-size: 18px;
+            height: 40px;
+            margin-right: 5px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            padding-left: 10px;
+            padding-right: 10px;
+            width: calc(100% - 122px);
+            -webkit-box-shadow: none;
+        }
+        #search-input:focus {box-shadow: none; outline: 0; -webkit-box-shadow: none;}
+        #search-input::placeholder {color: #bababa;}
+        .search-btn {
+            border: none;
+            background: #2980b9;
+            cursor: pointer;
+            float: right;
+            height: 40px;
+            padding: 0;
+            width: 90px;
+        }
+        .search-btn:active, .search-btn.active, .search-btn:hover, .search-btn:focus {outline: none;}
+        .searchbtn-icon {display: block; height: 20px; padding-left: 34px; width: 20px;}
+        .searchbtn-icon img {height: 100%; width: 100%;}
+        .search-history {
+            display: none;
+            position: absolute;
+            background-color: #ffffff;
+            border: 1px solid #b8b8b8;
+            width: calc(100% - 122px);
+        }
+        .search-history ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        .search-history li {
+            padding: 8px 10px;
+            cursor: pointer;
+        }
+        .search-history li:hover {
+            background-color: #f0f0f0;
+        }
+        @media screen and (max-width: 1020px) {
+            .book {
+                width: calc(33.33% - 6.67px);
+            }
+            .book:nth-of-type(4n) {
+                margin-right: 10px;
+            }
+            .book:nth-of-type(3n) {
+                margin-right: 0px;
+            }
+        }
+        /* Book Details Section (below book container) */
+        #bookdetail {
+            background-color: #ffffff;
+            display: none;
+            padding: 18px;
+            margin-bottom: 10px;
+            position: fixed;
+            top: 50px;
+		    left: 120px;
+		    overflow: auto;
+            box-shadow: 0px 0px 16px 16px #c7c7c7;
+		    outline: 500px solid rgba(0,0,0,0.5);
+            width: 80%;
+		    height: 80%;
+        }
+		#bookdetail h2 {
 			font-family: "Libre Baskerville", serif;
+			font-weight: 800;
+            margin-top: 0px;
+            margin-bottom: 14px;
+        }
+        #btnHide {
+            background: none;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            height: 44px;
+            padding: 0;
+            width: 44px;
+        }
+        .btnHideImg {
+            height: 40px;
+            width: 40px;
+        }
+		/* Align child img and div elements side by side */
+        .bookdata {
+            display: flex;
+            align-items: flex-start;
+        }
+        .booktext a {
+            display: block;
+            padding-top: 10px;
+        }
+        .authors {
+            font-weight: bold;
+            margin-top: 0px;
+        }
+        .metadata {
+            color: #696969;
+			margin-bottom: 0px;
+        }
+        .subtitle {
+			font-size: 22px;
+			font-weight: normal;
 		}
-		h1, h3 {
-			color: #acac98;
-		}
+		.isbn {
+            color: #696969;
+            margin-bottom: 0px;
+        }
+        .cover-photo {
+            width: 140px;
+            height: 200px;
+            margin-right: 10px;
+        }
+        .previewlink, .detailurl, .webreaderlink {
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        @media screen and (max-width: 600px) {
+            .bookdata {
+                flex-direction: column;
+            }
+            .cover-photo {
+                margin-right: 0px;
+                margin-bottom: 16px;
+            }
+        }
+        /* List and Grid Layout Styles */
+        .list-layout .bookimg {
+            height: 60px;
+            width: 40px;
+        }
+        .list-layout .bookright {
+            width: calc(100% - 52px);
+            line-height: 44px;
+        }
+        .list-layout .book {
+            width: 100%;
+            margin-right: 0px;
+        }
+        .grid-layout .bookimg {
+            height: 200px;
+            width: 140px;
+        }
+        .grid-layout .bookright {
+            width: calc(100% - 152px);
+            line-height: normal;
+        }
+        .grid-layout .book {
+            width: calc(25% - 7.5px);
+            margin-right: 10px;
+        }
+        .grid-layout .book:nth-of-type(4n) {
+            margin-right: 0px;
+        }
 	</style>
+    <!-- This Mustache template is reused by displayBooks and displayBookshelf functions -->
+    <script type="text/template" id="displayBooks">
+        {{#books}}
+        <div class="book">
+            <img class="bookimg" src="{{cover}}">
+            <div class="bookright">
+                <a href="javascript:void(0);" onclick="displayDetails('{{bookid}}'); return false;">{{booktitle}}</a>
+            </div>
+        </div>
+        {{/books}}
+    </script>
+    <!-- Mustache template used by displayDetails to display book details at bottom of page -->
+    <script type="text/template" id="displayDetails">
+        <div><button type="button" id="btnHide"><img class="btnHideImg" src="/static/x.png" alt=""></button></div>
+        <h2>
+            <span class="title">{{title}}</span>
+            <span class="subtitle">: {{subtitle}}</span>
+        </h2>
+        <div class="bookdata">
+            <img class="cover-photo" src="{{image}}" alt="Cover Photo">
+            <div class="booktext">
+                <p class="authors">{{authors}}</p>
+                <p class="metadata">{{{metadata}}}</p>
+                <p class="description">{{{description}}}</p>
+                <p class="isbn">{{isbn}}</p>
+                <p class="previewlink"><a href="{{previewLink}}">View on Google Books</a></p>
+                <p class="detailurl"><a href="{{url}}">View on Google Play</a></p>
+                <p class="webreaderlink"><a href="{{webReaderLink}}">Open in Web Reader</a></p>
+            </div>
+        </div>
+    </script>
+    <script>
+        // Stores up to 5 searches (history)
+        var searchHistory = [];
+        var currentLayoutType = 'grid';
+        $(function(){
+            // Using array to store books, other variables for pagination
+            var books = [];
+            var currentPage = 1;
+            var booksPerPage = 10;
+    
+            function displayBooks(page) {
+                var startIndex = (page - 1) * booksPerPage;
+                var endIndex = startIndex + booksPerPage;
+                var booksToShow = books.slice(startIndex, endIndex);
+                // The following data with array will be passed to Mustache template
+                var displayBooksTemplate = {
+                    books: []
+                };
+                for (var i in booksToShow) {
+                    var booktitle = booksToShow[i].volumeInfo.title;
+                    var bookid = booksToShow[i].id;
+                    var cover = "";
+                    if (booksToShow[i].volumeInfo.imageLinks != null) {
+                        var thumbnail = booksToShow[i].volumeInfo.imageLinks.thumbnail;
+                        if (thumbnail.includes("http")) {
+                            cover = thumbnail;
+                        } else {
+                            cover = "/static/book-not-found.png";
+                        }
+                    } else {
+                        cover = "/static/book-not-found.png";
+                    }
+                    // Add to template object
+                    displayBooksTemplate.books.push({
+                        booktitle: booktitle,
+                        bookid: bookid,
+                        cover: cover
+                    });
+                }
+                // Get the template HTML
+                var template = $("#displayBooks").html();
+                var resultHTML = Mustache.render(template, displayBooksTemplate);
+                // Add book divs to the #bookcontainer div
+                $("#bookcontainer").html(resultHTML);
+    
+                // Create page number buttons
+                var totalPages = Math.ceil(books.length / booksPerPage);
+                var buttonHTML = "";
+                for (var i = 1; i <= totalPages; i++) {
+                    // CSS changes to page buttons to clearly indicate which page is selected
+                    if (i === page) {
+                        buttonHTML += "<button type='button' class='pagebtn active' data-page='" + i + "'>" + i + "</button> ";
+                    } else {
+                        buttonHTML += "<button type='button' class='pagebtn' data-page='" + i + "'>" + i + "</button> ";
+                    }
+                }
+                $("#pagination").html(buttonHTML);
+
+                // Handle page button clicks, retrieve the clicked page number
+                $('.pagebtn').on('click', function() {
+                    var selectedPage = $(this).data('page');
+                    currentPage = parseInt(selectedPage);
+                    displayBooks(currentPage);
+                });
+                // Apply the current layout styling
+                applyLayout(currentLayoutType);
+            }
+    
+            function performSearch() {
+                // Prevent the form from submitting normally
+                event.preventDefault();
+                // Get the value of the search input
+                var term = $('#search-input').val().trim();
+                if(term !== "") {
+                    // Add search term to search history
+                    updateSearchHistory(term);
+                    // Google Books returns 400 Bad Request if exceed 40 results
+                    // for this assignment, 50 results are required
+                    // so my workaround is to make two AJAX requests, one for 40 results and one for 10 results
+                    var parameter = "?q=" + term + "&startIndex=0&maxResults=40";
+                    var service_point = "https://www.googleapis.com/books/v1/volumes/" + parameter;
+                    $.getJSON(service_point, function (json) {
+                        // Add first 40 books to the array up top
+                        books = json.items;
+                        var total = json.totalItems;
+                        var parameter2 = "?q=" + term + "&startIndex=40&maxResults=10";
+                        var service_point2 = "https://www.googleapis.com/books/v1/volumes/" + parameter2;
+                        $.getJSON(service_point2, function (json2) {
+                            // Add final 10 books to the array up top
+                            if (json2.items) {
+                                books = books.concat(json2.items);
+                            }
+                            $("#resultcount").text("Showing " + books.length + " of " + total + " results for \"" + term + "\".");
+
+                            var layoutbtns = "";
+                            if (currentLayoutType === 'list') {
+                                layoutbtns += "<button type='button' class='layoutbtn2 layoutbtn active' data-layout='list'><img src='/static/list.png' alt='List' class='layoutbtnimg'></button> ";
+                                layoutbtns += "<button type='button' class='layoutbtn1 layoutbtn' data-layout='grid'><img src='/static/grid.png' alt='Grid' class='layoutbtnimg'></button> ";
+                            } else {
+                                layoutbtns += "<button type='button' class='layoutbtn2 layoutbtn' data-layout='list'><img src='/static/list.png' alt='List' class='layoutbtnimg'></button> ";
+                                layoutbtns += "<button type='button' class='layoutbtn1 layoutbtn active' data-layout='grid'><img src='/static/grid.png' alt='Grid' class='layoutbtnimg'></button> ";
+                            }
+                            $("#resultcount").append(layoutbtns);
+                            // Reset to first page and display first page of results
+                            currentPage = 1;
+                            displayBooks(currentPage);
+                        });
+                    });
+                } else {
+                    // Show error message if input is empty
+                    $("#resultcount").text("Please enter a search term."); 
+                }
+                $("#search-input").val("");
+            }
+
+            // Handle search button click
+            $('.search-btn').on('click', function(event) {
+                event.preventDefault();
+                performSearch();
+            });
+
+            // Handle Enter key press in the search input
+            $('#search-input').on('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    performSearch()
+                    $("#search-history").hide();
+                    // Remove focus from search input
+                    // so that when you go back to focus, it will show search history
+                    $(this).blur();
+                }
+            });
+            // On focus, display search history
+            $('#search-input').on('focus', function() {
+                displaySearchHistory();
+            });
+            $(document).on('click', function(event) {
+                // Hide search history if click is outside of search form
+                if (!$(event.target).closest('.searchform').length) {
+                    $('#search-history').hide();
+                }
+            });
+            // Display search history
+            function displaySearchHistory() {
+                if (searchHistory.length > 0) {
+                    var historyHTML = '';
+                    historyHTML += '<ul>';
+                    for (var i = 0; i < searchHistory.length; i++) {
+                        historyHTML += '<li>' + searchHistory[i] + '</li>';
+                    }
+                    historyHTML += '</ul>';
+                    $('#search-history').html(historyHTML).show();
+                }
+            }
+            // Function called within performSearch does the following:
+            // prevent duplicate search terms, add search term to top of array, keep only 5 searches
+            function updateSearchHistory(term) {
+                var index = searchHistory.indexOf(term);
+                if (index !== -1) {
+                    searchHistory.splice(index, 1);
+                }
+                searchHistory.unshift(term);
+                if (searchHistory.length > 5) {
+                    searchHistory.pop();
+                }
+            }
+            // This places historical search term in input without user even noticing
+            // it performs search, which in turn clears search input
+            $(document).on('click', '#search-history li', function() {
+                var selectedTerm = $(this).text();
+                $('#search-input').val(selectedTerm);
+                performSearch(selectedTerm);
+                $('#search-history').hide();
+            });
+
+            // Hide search history when input loses focus
+            // after a delay
+            $('#search-input').on('blur', function() {
+                setTimeout(function() {
+                    $('#search-history').hide();
+                }, 200);
+            });
+        });
+
+        function applyLayout(layoutType) {
+            // These two lines are needed to ensure active class is present when switching tabs
+            $(".layoutbtn").removeClass("active");
+            $(".layoutbtn[data-layout='" + layoutType + "']").addClass("active");
+            if (layoutType === 'list') {
+                $('#bookcontainer').removeClass('grid-layout').addClass('list-layout');
+                $('#bookcontainer2').removeClass('grid-layout').addClass('list-layout');
+            } else if (layoutType === 'grid') {
+                $('#bookcontainer').removeClass('list-layout').addClass('grid-layout');
+                $('#bookcontainer2').removeClass('list-layout').addClass('grid-layout');
+            }
+        }
+
+        // Handle the switching between grid and list layouts
+        $(document).on('click', '.layoutbtn', function() {
+            $(".layoutbtn").removeClass("active");
+            $(this).addClass("active");
+            // Get value of data-layout
+            currentLayoutType = $(this).data('layout');
+            applyLayout(currentLayoutType);
+        });
+
+        // Hide modal overlay when close button is clicked
+        // modified because #btnHide is not present on page load
+        $(document).on('click', '#btnHide', function() {
+            console.log("Hiding book details");
+            $("#bookdetail").fadeOut();
+        });
+
+        function displayDetails(bookid) {
+            var service_point = 'https://www.googleapis.com/books/v1/volumes/' + bookid
+            $.getJSON(service_point, function(detailjson){
+                // bookdetail div is hidden by default. Show it when a book is clicked
+                $("#bookdetail").show();
+                // Data that is passed to template
+                var data = {};
+
+                data.title = detailjson.volumeInfo.title;
+                if (detailjson.volumeInfo.subtitle) {
+                    data.subtitle = detailjson.volumeInfo.subtitle;
+                } else {
+                    data.subtitle = '';
+                }
+                if (detailjson.volumeInfo.authors && detailjson.volumeInfo.authors.length > 0) {
+                    data.authors = detailjson.volumeInfo.authors.join(', ');
+                } else {
+                    data.authors = 'Unknown Author';
+                }
+                if (detailjson.volumeInfo.description) {
+                    data.description = detailjson.volumeInfo.description;
+                } else {
+                    data.description = 'No Description';
+                }
+                var defaultImage = "/static/book-not-found.png"
+                if(detailjson.volumeInfo.imageLinks && detailjson.volumeInfo.imageLinks.thumbnail) {
+                    data.image = detailjson.volumeInfo.imageLinks.thumbnail
+                } else {
+                    data.image = "/static/book-not-found.png"
+                }
+                data.url = detailjson.volumeInfo.infoLink
+                if(detailjson.volumeInfo.infoLink) {
+                    data.url = detailjson.volumeInfo.infoLink
+                } else {
+                    data.url = "javascript:void(0);"
+                }
+                if(detailjson.volumeInfo.previewLink) {
+                    data.previewLink = detailjson.volumeInfo.previewLink
+                } else {
+                    data.previewLink = "javascript:void(0);"
+                }
+                if(detailjson.accessInfo.webReaderLink) {
+                    data.webReaderLink = detailjson.accessInfo.webReaderLink
+                } else {
+                    data.webReaderLink = "javascript:void(0);"
+                }
+
+                var categories = '<br>No Categories Listed.'; // Display if no categories
+                if (detailjson.volumeInfo.categories && detailjson.volumeInfo.categories.length > 0) {
+                    categories = '<br>' + detailjson.volumeInfo.categories.join('<br>');
+                }
+				// Display only the year of the publication date
+                // Substring function accomplishes this because all dates are in format "YYYY-MM-DD"
+				var metadata = (detailjson.volumeInfo.publisher || 'Unknown Publisher') + 
+					', ' + detailjson.volumeInfo.publishedDate.substring(0, 4) + ' - ' + (detailjson.volumeInfo.pageCount || 'Unknown') + ' pages' + categories;
+                data.metadata = metadata;
+
+                // Obtain ISBN numbers from JSON data, add to isbn paragraph
+				var isbn = 'ISBN: Not Listed'; // Display not listed if no ISBNs found
+                if (detailjson.volumeInfo.industryIdentifiers && detailjson.volumeInfo.industryIdentifiers.length > 0) {
+                    isbn = 'ISBN: ';
+                    for (var i in detailjson.volumeInfo.industryIdentifiers) {
+                        if (i > 0) {
+                            isbn += ', ';
+                        }
+                        isbn += detailjson.volumeInfo.industryIdentifiers[i].identifier;
+                    }
+                }
+				data.isbn = isbn;
+
+                // Handle templating
+                var template = $("#displayDetails").html();
+                var resultHTML = Mustache.render(template, data);
+                $('#bookdetail').html(resultHTML);
+            });
+        }
+        function displayBookshelf() {
+            var service_point = "https://www.googleapis.com/books/v1/users/113197365570457724418/bookshelves/1001/volumes";
+    
+            $.getJSON(service_point, function (json) {
+                // The following data with array will be passed to Mustache template
+                var displayBookshelfTemplate = {
+                    books: []
+                };
+                for (i in json.items) {
+                    var booktitle = json.items[i].volumeInfo.title;
+                    var bookid = json.items[i].id;
+                    // Set src for image, or use a default image if not available
+                    var cover = "";
+                    if (json.items[i].volumeInfo.imageLinks != null) {
+                        var thumbnail = json.items[i].volumeInfo.imageLinks.thumbnail;
+                        if (thumbnail.includes("http")) {
+                            cover = thumbnail;
+                        } else {
+                            cover = "/static/book-not-found.png";
+                        }
+                    } else {
+                        cover = "/static/book-not-found.png";
+                    }
+
+                    displayBookshelfTemplate.books.push({
+                        booktitle: booktitle,
+                        bookid: bookid,
+                        cover: cover
+                    });
+                }
+                // Handle templating
+                var template = $("#displayBooks").html();
+                var resultHTML = Mustache.render(template, displayBookshelfTemplate);
+                $("#bookcontainer2").html(resultHTML);
+                // Display the total number of books found
+                var total = json.totalItems;
+                $("#resultcount2").text("Showing " + total + " results in bookshelf with ID 1001 for User 113197365570457724418.");
+                var layoutbtns = "";
+                if (currentLayoutType === 'list') {
+                    layoutbtns += "<button type='button' class='layoutbtn2 layoutbtn active' data-layout='list'><img src='/static/list.png' alt='List' class='layoutbtnimg'></button> ";
+                    layoutbtns += "<button type='button' class='layoutbtn1 layoutbtn' data-layout='grid'><img src='/static/grid.png' alt='Grid' class='layoutbtnimg'></button> ";
+                } else {
+                    layoutbtns += "<button type='button' class='layoutbtn2 layoutbtn' data-layout='list'><img src='/static/list.png' alt='List' class='layoutbtnimg'></button> ";
+                    layoutbtns += "<button type='button' class='layoutbtn1 layoutbtn active' data-layout='grid'><img src='/static/grid.png' alt='Grid' class='layoutbtnimg'></button> ";
+                }
+                $("#resultcount2").append(layoutbtns);
+            });
+        }
+        // This function is called when "Book Search" tab is clicked
+        function showBooksSearch() {
+            // Update CSS class for active tab (Book Search)
+            updateActiveLink('Books Search');
+            // Clear, hide, and show elements to simulate tab switch
+            $("#bookdetail").hide();
+            $("#bsearchinfo").show();
+            $("#resultcount").show();
+            $("#resultcount2").hide();
+            $(".searchform").show();
+            $("#pagination").show();
+            $("#bookcontainer").show();
+            $("#bookcontainer2").hide();
+            applyLayout(currentLayoutType);
+        }
+        // This function is called when "My Bookshelf" tab is clicked
+        function showMyBookshelf() {
+            // Update CSS class for active tab (My Bookshelf)
+            updateActiveLink('My Bookshelf');
+            // Clear, hide, and show elements to simulate tab switch
+            $("#bookdetail").hide();
+            $("#bsearchinfo").hide();
+            $("#resultcount").hide();
+            $("#resultcount2").show();
+            $(".searchform").hide();
+            $("#pagination").hide();
+            $("#bookcontainer").hide();
+            $("#bookcontainer2").show();
+            applyLayout(currentLayoutType);
+            // Call displayBookshelf to show the bookshelf books
+            displayBookshelf();
+        }
+        // Update CSS class for active tab
+        function updateActiveLink(clickedItem) {
+            const links = document.querySelectorAll('.m4links li');
+            links.forEach(li => {
+                // Access the span inside each li
+                const spanText = li.querySelector('span').textContent;
+                if (spanText === clickedItem) {
+                    li.className = 'm4active';
+                } else {
+                    li.className = 'm4inactive';
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 <header>
@@ -84,8 +778,29 @@
 		</ul>
 	</nav>
 </header>
+<nav class="m4linksnav">
+    <ul class="m4links">
+        <li class="m4active"><span onclick="showBooksSearch();">Books Search</span></li>
+        <li class="m4inactive"><span onclick="showMyBookshelf();">My Bookshelf</span></li>
+    </ul>
+</nav>
 <main>
-	<h3>Nothing to see here yet (Milestone 4).</h3>
+    <p id="bsearchinfo" class="pageinfo">Use this tool to find books on Google Books by title, author, or keyword.</p>
+
+    <div class="searchform">
+        <input id="search-input" id="name" name="name" placeholder="Search Books" required type="text" autocomplete="off">
+        <button class="search-btn" name="submit" type="submit">
+            <span class="searchbtn-icon"><img src="/static/search.png" alt=""></span>
+        </button>
+        <div id="search-history" class="search-history"></div>
+    </div>
+
+	<div id="resultcount" class="pageinfo"></div>
+    <div id="resultcount2" class="pageinfo"></div>
+    <div id="bookcontainer"></div>
+    <div id="bookcontainer2"></div>
+    <div id="pagination"></div>
+    <div id="bookdetail"></div>
 </main>
 </body>
 </html>
